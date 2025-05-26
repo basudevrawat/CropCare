@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto text-center">
+        <h1 class="mb-4">CropCare Voice Assistant</h1>
+        <p class="lead mb-5">Talk to our voice assistant to get information about plant diseases or navigate the app.</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card p-4">
+            <div class="text-center mb-4">
+                <i class="bi bi-mic-fill feature-icon"></i>
+                <h3>Speak Now</h3>
+                <p id="status">Click the button below to start recording</p>
+            </div>
+            
+            <div class="text-center mb-3">
+                <button id="recordButton" class="btn btn-lg btn-success">
+                    <i class="bi bi-mic"></i> Start Recording
+                </button>
+                <button id="stopButton" class="btn btn-lg btn-danger d-none">
+                    <i class="bi bi-stop-fill"></i> Stop
+                </button>
+            </div>
+            
+            <div class="mt-4">
+                <h4>Recognized Speech:</h4>
+                <div class="form-control p-3" id="transcript" style="min-height: 100px;"></div>
+            </div>
+            
+            <div class="mt-4">
+                <h4>Response:</h4>
+                <div class="form-control p-3" id="response" style="min-height: 100px;"></div>
+            </div>
+            
+            <div class="text-center mt-4">
+                <a href="/" class="btn btn-secondary">Back to Home</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Variables
+    let mediaRecorder;
+    let audioChunks = [];
+    
+    // DOM elements
+    const recordButton = document.getElementById('recordButton');
+    const stopButton = document.getElementById('stopButton');
+    const status = document.getElementById('status');
+    const transcript = document.getElementById('transcript');
+    const response = document.getElementById('response');
+    
+    // Event listeners
+    recordButton.addEventListener('click', startRecording);
+    stopButton.addEventListener('click', stopRecording);
+    
+    // Start recording function
+    async function startRecording() {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            
+            mediaRecorder = new MediaRecorder(stream);
+            audioChunks = [];
+            
+            mediaRecorder.addEventListener('dataavailable', event => {
+                audioChunks.push(event.data);
+            });
+            
+            mediaRecorder.addEventListener('stop', processAudio);
+            
+            mediaRecorder.start();
+            
+            // Update UI
+            recordButton.classList.add('d-none');
+            stopButton.classList.remove('d-none');
+            status.textContent = "Recording... Speak now";
+            transcript.textContent = "";
+            response.textContent = "";
+            
+        } catch (error) {
+            console.error('Error accessing microphone:', error);
+            status.textContent = "Error accessing microphone. Please check permissions.";
+        }
+    }
+    
+    // Stop recording function
+    function stopRecording() {
+        if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+            mediaRecorder.stop();
+            status.textContent = "Processing audio...";
+            
+            // Update UI
+            stopButton.classList.add('d-none');
+            recordButton.classList.remove('d-none');
+        }
+    }
+    
+    // Process audio function
+    function processAudio() {
+        const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+        const formData = new FormData();
+        formData.append('audio_data', audioBlob);
+        
+        // Send to server
+        fetch('/process_voice', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                transcript.textContent = data.text;
+                
+                // Simple command processing
+                const text = data.text.toLowerCase();
+                
+                if (text.includes('home') || text.includes('go back')) {
+                    response.textContent = "Navigating to home page...";
+                    setTimeout(() => { window.location.href = '/'; }, 1500);
+                } else if (text.includes('upload') || text.includes('image')) {
+                    response.textContent = "Let's upload an image. Navigating to upload page...";
+                    setTimeout(() => { window.location.href = '/'; }, 1500);
+                } else {
+                    response.textContent = "I heard you say: " + data.text + ". To upload a plant image, say 'upload image' or 'go to upload'. To go back to the home page, say 'home' or 'go back'.";
+                }
+                
+                status.textContent = "Recording complete";
+            } else {
+                transcript.textContent = "Error: " + data.message;
+                status.textContent = "An error occurred";
+            }
+        })
+        .catch(error => {
+            console.error('Error processing audio:', error);
+            status.textContent = "Error processing audio";
+        });
+    }
+</script>
+{% endblock %} 

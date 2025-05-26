@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  krishibondhu:
+    build: .
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./static:/app/static
+    restart: unless-stopped
+    environment:
+      - FLASK_ENV=production 

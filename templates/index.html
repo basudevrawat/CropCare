@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto text-center">
+        <h1 class="mb-4">CropCare</h1>
+        <p class="lead mb-5">Your AI-powered assistant for plant disease detection. Upload a photo of your plant leaf, and we'll identify the disease and suggest treatment.</p>
+    </div>
+</div>
+
+<div class="row mb-5">
+    <div class="col-md-4">
+        <div class="card h-100 p-4 text-center">
+            <div class="feature-icon">
+                <i class="bi bi-upload"></i>
+            </div>
+            <h3>Image Upload</h3>
+            <p>Upload an image of your plant leaf to detect diseases</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 p-4 text-center">
+            <div class="feature-icon">
+                <i class="bi bi-mic"></i>
+            </div>
+            <h3>Voice Assistant</h3>
+            <p>Use your voice to interact with the application</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 p-4 text-center">
+            <div class="feature-icon">
+                <i class="bi bi-translate"></i>
+            </div>
+            <h3>Multiple Languages</h3>
+            <p>Get results in your preferred language</p>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 mx-auto">
+        <div class="card p-4">
+            <h3 class="text-center mb-4">Upload Plant Image</h3>
+            <form action="/predict" method="post" enctype="multipart/form-data">
+                <div class="mb-3 text-center">
+                    <img id="uploadPreview" class="img-fluid mb-3 d-none" alt="Image preview" />
+                    <div class="input-group">
+                        <input type="file" class="form-control" id="file" name="file" accept="image/*" onchange="previewImage()" required>
+                        <button class="btn btn-success" type="submit">Detect Disease</button>
+                    </div>
+                </div>
+            </form>
+            <div class="text-center mt-3">
+                <p>or</p>
+                <a href="/voice_input" class="btn voice-input-btn">
+                    <i class="bi bi-mic-fill"></i> Use Voice Assistant
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function previewImage() {
+        var preview = document.getElementById('uploadPreview');
+        var file = document.getElementById('file').files[0];
+        var reader = new FileReader();
+
+        reader.onloadend = function () {
+            preview.src = reader.result;
+            preview.classList.remove('d-none');
+        }
+
+        if (file) {
+            reader.readAsDataURL(file);
+        } else {
+            preview.src = "";
+            preview.classList.add('d-none');
+        }
+    }
+</script>
+{% endblock %} 
