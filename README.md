@@ -2,16 +2,6 @@
 
 CropCare is an AI-powered plant disease detection system developed for the Cyfuture AI Hackathon 1.0. The application uses deep learning to identify 38 different plant diseases from leaf images, providing farmers with instant diagnosis and treatment recommendations.
 
-![CropCare Interface](screenshots/homepage.png)
-
-## Key Features
-
-- **Accurate Disease Detection**: Identifies 38 different plant diseases with 96.98% validation accuracy
-- **Voice Assistant**: Helps farmers who cannot read to navigate the application
-- **Regional Language Support**: Provides diagnosis in 11 Indian languages including Hindi, Bengali, Telugu, etc.
-- **Treatment Recommendations**: Offers practical advice for managing identified diseases
-- **User-Friendly Interface**: Simple design that requires minimal technical knowledge
-
 ## Technology Stack
 
 - **Backend**: Python, Flask, TensorFlow
@@ -19,14 +9,6 @@ CropCare is an AI-powered plant disease detection system developed for the Cyfut
 - **AI/ML**: Convolutional Neural Network (CNN) with 7.8 million parameters
 - **Accessibility**: Google Text-to-Speech (gTTS), Speech Recognition
 - **Translation**: Google Translate API
-
-## Disease Detection Examples
-
-### Potato Early Blight
-![Potato Early Blight Detection](screenshots/potato_early_blight.png)
-
-### Healthy Tomato Plant
-![Healthy Tomato Detection](screenshots/healthy_tomato.png)
 
 ## Model Performance
 
@@ -38,8 +20,8 @@ CropCare is an AI-powered plant disease detection system developed for the Cyfut
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/cropcare.git
-   cd cropcare
+   git clone https://github.com/basudevrawat/CropCare.git
+   cd CropCare
    ```
 
 2. Install dependencies:
@@ -67,13 +49,11 @@ CropCare is an AI-powered plant disease detection system developed for the Cyfut
 
 ## Team Members
 
-| Name | LinkedIn |
-|------|----------|
-| Kaberi Acharya | [LinkedIn](https://www.linkedin.com/in/contactkaberi/) |
-| Namita Devi | [LinkedIn](https://www.linkedin.com/in/namita-devi-b104a828a/) |
-| Irene Therese Joseph | [LinkedIn](https://www.linkedin.com/in/irenetjoseph/) |
-| Niva Rani Deka | [LinkedIn](https://www.linkedin.com/in/niva-rani-deka-846605314/) |
-| Basudev Rawat | [LinkedIn](https://www.linkedin.com/in/basudevrawat/) |
+- [Kaberi Acharya](https://www.linkedin.com/in/contactkaberi/)
+- [Namita Devi](https://www.linkedin.com/in/namita-devi-b104a828a/)
+- [Irene Therese Joseph](https://www.linkedin.com/in/irenetjoseph/)
+- [Niva Rani Deka](https://www.linkedin.com/in/niva-rani-deka-846605314/)
+- [Basudev Rawat](https://www.linkedin.com/in/basudevrawat/)
 
 ## Project Structure
 
@@ -99,5 +79,10 @@ cropcare/
 
 ## Acknowledgments
 
-- Plant Village Dataset for providing the training data
-- Cyfuture AI Hackathon for the opportunity to develop this solution 
+- [Plant Village Dataset](https://www.kaggle.com/datasets/vipoooool/new-plant-diseases-dataset) for providing the training data
+- [Google Text-to-Speech (gTTS)](https://pypi.org/project/gTTS/) for voice assistance functionality
+- [Google Translate API](https://cloud.google.com/translate) for multilingual support
+- [SpeechRecognition](https://pypi.org/project/SpeechRecognition/) for voice input processing
+- [Flask](https://flask.palletsprojects.com/) for web framework
+- [TensorFlow](https://www.tensorflow.org/) for machine learning capabilities
+- Cyfuture AI Hackathon for the opportunity to develop this solution
